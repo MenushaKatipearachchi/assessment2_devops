@@ -34,9 +34,9 @@ jobs:
       run: docker build --build-arg service=${{ matrix.service }} -t assessment2_devops-${{ matrix.service }}-service:latest .
 
     - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+      run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
     - name: Tag and push Docker image
       run: |
-        docker tag assessment2_devops-${{ matrix.service }}:latest witheredsoul/${{ matrix.service }}:tag
-        docker push witheredsoul/${{ matrix.service }}:tag
+        docker tag assessment2_devops-${{ matrix.service }}:latest ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}:tag
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}:tag
