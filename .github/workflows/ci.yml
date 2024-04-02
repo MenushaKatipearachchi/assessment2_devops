@@ -11,6 +11,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        service: [review-service, delivery-service, order-service, seller-service, payment-service, notification-service, auth-service, user-service, email-service, orchestrator-service]    
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js
@@ -27,12 +31,12 @@ jobs:
       run: pnpm run build
 
     - name: Build Docker image
-      run: docker build -t assessment2_devops-review-service:latest .
+      run: docker build --build-arg service=${{ matrix.service }} -t assessment2_devops-${{ matrix.service }}:latest .
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
     - name: Tag and push Docker image
       run: |
-        docker tag assessment2_devops-review-service:latest yourhubusername/your-repo:tag
-        docker push yourhubusername/your-repo:tag
+        docker tag assessment2_devops-${{ matrix.service }}:latest witheredsoul/${{ matrix.service }}:tag
+        docker push witheredsoul/${{ matrix.service }}:tag
