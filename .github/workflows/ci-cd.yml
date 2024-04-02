@@ -1,0 +1,38 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Dependencies and Build
+      run: |
+        cd workspace-scripts/services
+        npm install
+        node build/esbuild.js
+
+    - name: Run Linter
+      run: |
+        cd workspace-scripts/services
+        bash lint.sh
+
+    - name: Start in Development Mode
+      run: |
+        cd workspace-scripts/services
+        bash start-dev.sh
+
+    - name: Start
+      run: |
+        cd workspace-scripts/services
+        bash start.sh
+
+    - name: Terminate
+      run: |
+        cd workspace-scripts
+        bash terminate.sh
