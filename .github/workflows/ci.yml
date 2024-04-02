@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -25,3 +25,14 @@ jobs:
       run: pnpm test
     - name: Build
       run: pnpm run build
+
+    - name: Build Docker image
+      run: docker build -t assessment2_devops-review-service:latest .
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+    - name: Tag and push Docker image
+      run: |
+        docker tag assessment2_devops-review-service:latest yourhubusername/your-repo:tag
+        docker push yourhubusername/your-repo:tag
