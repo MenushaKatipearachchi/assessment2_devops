@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        service: [review-service, delivery-service, order-service, seller-service, payment-service, notification-service, auth-service, user-service, email-service, orchestrator-service]    
+        service: [review, delivery, order, seller, payment, notification, auth, user, email, orchestrator]    
 
     steps:
     - uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
       run: pnpm run build
 
     - name: Build Docker image
-      run: docker build --build-arg service=${{ matrix.service }} -t assessment2_devops-${{ matrix.service }}:latest .
+      run: docker build --build-arg service=${{ matrix.service }} -t assessment2_devops-${{ matrix.service }}-service:latest .
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
