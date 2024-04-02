@@ -1,0 +1,49 @@
+{
+  "name": "agro",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "start": "node dist/server.js --enable-source-maps",
+    "format": "prettier --write \"**/*.{js,md}\"",
+    "lint": "turbo run lint",
+    "prepare": "husky install",
+    "test": "dotenv -- turbo run test",
+    "kill": "sh ./workspace-scripts/terminate.sh",
+    "clean": "find . -name '.DS_Store' -type f -delete"
+  },
+  "dependencies": {
+    "dotenv-cli": "7.0.0",
+    "esbuild": "0.17.5",
+    "esbuild-plugin-glob": "2.2.1",
+    "rimraf": "4.1.2",
+    "shx": "0.3.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.17.10",
+    "@babel/core": "7.17.12",
+    "@babel/eslint-parser": "7.17.0",
+    "@babel/node": "7.20.7",
+    "@babel/preset-env": "7.17.12",
+    "cross-env": "5.1.4",
+    "eslint": "8.36.0",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-config-turbo": "0.0.7",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-prettier": "2.6.0",
+    "husky": "8.0.3",
+    "kill-port": "2.0.1",
+    "prettier": "2.8.3",
+    "turbo": "1.7.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "pnpm@7.30.0"
+}
