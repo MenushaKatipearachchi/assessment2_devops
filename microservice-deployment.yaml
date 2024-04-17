@@ -1,0 +1,158 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-1-secret
+type: Opaque
+stringData:
+  PORT: "4003"
+  JWT_SECRET: "9a1790796ceed7c01ebc2ec3ab9bb72455f79eb272e6754deed81342932af044b5e2910a47177a1093c0e28f8dbdc2a30cc92b5c17f40392f8899d446a99ae6c"
+  ACCESS_TOKEN_EXPIRY: "1h"
+  REFRESH_TOKEN_EXPIRY: "1d"
+  USER_SERVICE_BASE_URL: "http://user-service:4001"
+  EMAIL_SERVICE_BASE_URL: "http://email-service:4004"
+  FRONTEND_BASE_URL: "http://localhost:3000"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-2-secret
+type: Opaque
+stringData:
+  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
+  PORT: "4008"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-3-secret
+type: Opaque
+stringData:
+  PORT: "4004"
+  MAIL_HOST: "localhost"
+  MAIL_USER: "wellnessroots01@gmail.com"
+  MAIL_PASSWORD: "dypzorkjvojtadph"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-4-secret
+type: Opaque
+stringData:
+  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
+  PORT: "4009"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-5-secret
+type: Opaque
+stringData:
+  PORT: "4007"
+  AUTH_SERVICE_BASE_URL: "http://auth-service:4003"
+  USER_SERVICE_BASE_URL: "http://user-service:4001"
+  EMAIL_SERVICE_BASE_URL: "http://email-service:4004"
+  ORDER_SERVICE_BASE_URL: "http://order-service:4002"
+  PAYMENT_SERVICE_BASE_URL: "http://payment-service:4020"
+  REVIEW_SERVICE_BASE_URL: "http://review-service:4005"
+  DELIVERY_SERVICE_BASE_URL: "http://delivery-service:4008"
+  NOTIFICATION_SERVICE_BASE_URL: "http://notification-service:4009"
+  SELLER_SERVICE_BASE_URL: "http://seller-service:4006"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-6-secret
+type: Opaque
+stringData:
+  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
+  PORT: "4002"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-7-secret
+type: Opaque
+stringData:
+  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
+  PORT: "4020"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-8-secret
+type: Opaque
+stringData:
+  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
+  PORT: "4005"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-9-secret
+type: Opaque
+stringData:
+  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
+  PORT: "4006"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: service-10-secret
+type: Opaque
+stringData:
+  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
+  PORT: "4001"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-container
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice-container
+  template:
+    metadata:
+      labels:
+        app: microservice-container
+    spec:
+      containers:
+        - name: microservice-container
+          image: witheredsoul/microservices_project:tag
+          ports:
+          - containerPort: 4007
+          envFrom:
+          - secretRef:
+              name: service-1-secret
+          - secretRef:
+              name: service-2-secret
+          - secretRef:
+              name: service-3-secret
+          - secretRef:
+              name: service-4-secret
+          - secretRef:
+              name: service-5-secret
+          - secretRef:
+              name: service-6-secret
+          - secretRef:
+              name: service-7-secret
+          - secretRef:
+              name: service-8-secret
+          - secretRef:
+              name: service-9-secret
+          - secretRef:
+              name: service-10-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-container
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4007
+  selector:
+    app: microservice-container
+

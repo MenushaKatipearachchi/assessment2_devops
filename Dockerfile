@@ -39,7 +39,7 @@ COPY --from=cleaner /app/out/full/ ./packages
 RUN  pnpm turbo run build --filter=$service
 
 
-EXPOSE 4002
+EXPOSE 4007
 
 # RUN export dir=$service
 
