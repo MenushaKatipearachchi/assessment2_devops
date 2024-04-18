@@ -11,7 +11,7 @@ require("esbuild")
     bundle: false,
     outdir: "./dist",
     platform: "node",
-    target: "node16.0",
+    target: "node18.0",
     format: "cjs",
     minify: false,
     sourcemap: true,

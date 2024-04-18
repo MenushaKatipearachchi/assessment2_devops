@@ -1,158 +1,320 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-1-secret
-type: Opaque
-stringData:
-  PORT: "4003"
-  JWT_SECRET: "9a1790796ceed7c01ebc2ec3ab9bb72455f79eb272e6754deed81342932af044b5e2910a47177a1093c0e28f8dbdc2a30cc92b5c17f40392f8899d446a99ae6c"
-  ACCESS_TOKEN_EXPIRY: "1h"
-  REFRESH_TOKEN_EXPIRY: "1d"
-  USER_SERVICE_BASE_URL: "http://user-service:4001"
-  EMAIL_SERVICE_BASE_URL: "http://email-service:4004"
-  FRONTEND_BASE_URL: "http://localhost:3000"
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-2-secret
-type: Opaque
-stringData:
-  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
-  PORT: "4008"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-3-secret
-type: Opaque
-stringData:
-  PORT: "4004"
-  MAIL_HOST: "localhost"
-  MAIL_USER: "wellnessroots01@gmail.com"
-  MAIL_PASSWORD: "dypzorkjvojtadph"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-4-secret
-type: Opaque
-stringData:
-  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
-  PORT: "4009"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-5-secret
-type: Opaque
-stringData:
-  PORT: "4007"
-  AUTH_SERVICE_BASE_URL: "http://auth-service:4003"
-  USER_SERVICE_BASE_URL: "http://user-service:4001"
-  EMAIL_SERVICE_BASE_URL: "http://email-service:4004"
-  ORDER_SERVICE_BASE_URL: "http://order-service:4002"
-  PAYMENT_SERVICE_BASE_URL: "http://payment-service:4020"
-  REVIEW_SERVICE_BASE_URL: "http://review-service:4005"
-  DELIVERY_SERVICE_BASE_URL: "http://delivery-service:4008"
-  NOTIFICATION_SERVICE_BASE_URL: "http://notification-service:4009"
-  SELLER_SERVICE_BASE_URL: "http://seller-service:4006"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-6-secret
-type: Opaque
-stringData:
-  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
-  PORT: "4002"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-7-secret
-type: Opaque
-stringData:
-  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
-  PORT: "4020"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-8-secret
-type: Opaque
-stringData:
-  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
-  PORT: "4005"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-9-secret
-type: Opaque
-stringData:
-  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
-  PORT: "4006"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: service-10-secret
-type: Opaque
-stringData:
-  DB_URL: "mongodb+srv://DS01:test@ds.lpnsong.mongodb.net/?retryWrites=true&w=majority"
-  PORT: "4001"
-
----
+# Notification Service
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microservice-container
+  name: notification
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: microservice-container
+      app: notification
   template:
     metadata:
       labels:
-        app: microservice-container
+        app: notification
     spec:
       containers:
-        - name: microservice-container
-          image: witheredsoul/microservices_project:tag
+        - name: notification
+          image: menushaeshan/notification:tag
           ports:
-          - containerPort: 4007
-          envFrom:
-          - secretRef:
-              name: service-1-secret
-          - secretRef:
-              name: service-2-secret
-          - secretRef:
-              name: service-3-secret
-          - secretRef:
-              name: service-4-secret
-          - secretRef:
-              name: service-5-secret
-          - secretRef:
-              name: service-6-secret
-          - secretRef:
-              name: service-7-secret
-          - secretRef:
-              name: service-8-secret
-          - secretRef:
-              name: service-9-secret
-          - secretRef:
-              name: service-10-secret
+          - containerPort: 4009
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: microservice-container
+  name: notification
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4009
+  selector:
+    app: notification
+---
+# Review Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: review
+  template:
+    metadata:
+      labels:
+        app: review
+    spec:
+      containers:
+        - name: review
+          image: menushaeshan/review:tag
+          ports:
+          - containerPort: 4005
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: review
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4005
+  selector:
+    app: review
+---
+# Seller Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seller
+  template:
+    metadata:
+      labels:
+        app: seller
+    spec:
+      containers:
+        - name: seller
+          image: menushaeshan/seller:tag
+          ports:
+          - containerPort: 4006
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seller
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4006
+  selector:
+    app: seller
+---
+# Payment Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+        - name: payment
+          image: menushaeshan/payment:tag
+          ports:
+          - containerPort: 4020
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4020
+  selector:
+    app: payment
+---
+# Order Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+        - name: order
+          image: menushaeshan/order:tag
+          ports:
+          - containerPort: 4002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4002
+  selector:
+    app: order
+---
+# User Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+        - name: user
+          image: menushaeshan/user:tag
+          ports:
+          - containerPort: 4001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4001
+  selector:
+    app: user
+---
+# Delivery Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delivery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: delivery
+  template:
+    metadata:
+      labels:
+        app: delivery
+    spec:
+      containers:
+        - name: delivery
+          image: menushaeshan/delivery:tag
+          ports:
+          - containerPort: 4008
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: delivery
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4008
+  selector:
+    app: delivery
+---
+# Orchestrator Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orchestrator
+  template:
+    metadata:
+      labels:
+        app: orchestrator
+    spec:
+      containers:
+        - name: orchestrator
+          image: menushaeshan/orchestrator:tag
+          ports:
+          - containerPort: 4007
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orchestrator
 spec:
   type: LoadBalancer
   ports:
   - port: 4007
   selector:
-    app: microservice-container
-
+    app: orchestrator
+---
+# Auth Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: menushaeshan/auth:tag
+          ports:
+          - containerPort: 4003
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4003
+  selector:
+    app: auth
+---
+# Email Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: email
+  template:
+    metadata:
+      labels:
+        app: email
+    spec:
+      containers:
+        - name: email
+          image: menushaeshan/email:tag
+          ports:
+          - containerPort: 4004
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: email
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4004
+  selector:
+    app: email

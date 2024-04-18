@@ -7,7 +7,7 @@ ARG service
 
 WORKDIR /app
 
-RUN yarn global add turbo pnpm
+RUN npm install -g turbo pnpm
 
 COPY . .
 
@@ -20,30 +20,17 @@ RUN apk update
 
 ARG service
 
-
 WORKDIR /app
 
-RUN yarn global add pnpm turbo
+RUN npm install -g pnpm@9.0.2 turbo
 
-COPY .gitignore .gitignore
-COPY --from=cleaner /app/out/json/ .
-COPY --from=cleaner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY --from=cleaner /app/workspace-scripts ./workspace-scripts
-COPY --from=cleaner /app/out/full/ .
+COPY --from=cleaner /app/ .
 
 RUN pnpm i --shamefully-hoist
+RUN pnpm turbo run build --filter=$service
 
-COPY --from=cleaner /app/out/full/ ./packages
- 
-
-RUN  pnpm turbo run build --filter=$service
-
-
-EXPOSE 4007
-
-# RUN export dir=$service
+EXPOSE 4002
 
 ENV directory=$service
 
-RUN echo $service
 CMD ["sh", "-c",  "node services/$directory/dist/server.js --enable-source-maps"]
