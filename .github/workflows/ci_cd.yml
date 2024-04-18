@@ -22,7 +22,7 @@ jobs:
       with:
         node-version: 18.20.2
     - name: Install pnpm
-      run: npm install -g pnpm
+      run: npm install -g pnpm@9.0.2
     - name: Install Dependencies
       run: pnpm install
     - name: Run Tests
@@ -40,3 +40,12 @@ jobs:
       run: |
         docker tag assessment2_devops-${{ matrix.service }}-service:latest ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}:tag
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}:tag
+
+    - name: Set up Kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f ./k8s
