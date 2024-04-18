@@ -7,6 +7,8 @@ ARG service
 
 WORKDIR /app
 
+RUN npm config set fetch-retry-maxtimeout 1000000
+
 RUN npm install -g turbo pnpm
 
 COPY . .
