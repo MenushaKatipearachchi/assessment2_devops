@@ -1,0 +1,68 @@
+# Auth Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+        - name: auth-service
+          image: menushaeshan/auth:tag
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 4003
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: auth-service-secrets
+                  key: PORT
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-service-secrets
+                  key: JWT_SECRET
+            - name: ACCESS_TOKEN_EXPIRY
+              valueFrom:
+                secretKeyRef:
+                  name: auth-service-secrets
+                  key: ACCESS_TOKEN_EXPIRY
+            - name: REFRESH_TOKEN_EXPIRY
+              valueFrom:
+                secretKeyRef:
+                  name: auth-service-secrets
+                  key: REFRESH_TOKEN_EXPIRY
+            - name: USER_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: auth-service-secrets
+                  key: USER_SERVICE_BASE_URL
+            - name: EMAIL_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: auth-service-secrets
+                  key: EMAIL_SERVICE_BASE_URL
+            - name: FRONTEND_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: auth-service-secrets
+                  key: FRONTEND_BASE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4003
+  selector:
+    app: auth-service

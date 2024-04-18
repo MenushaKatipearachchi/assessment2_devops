@@ -1,0 +1,53 @@
+# Email Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: email-service
+  template:
+    metadata:
+      labels:
+        app: email-service
+    spec:
+      containers:
+        - name: email-service
+          image: menushaeshan/email:tag
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 4004
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: email-service-secrets
+                  key: PORT
+            - name: MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: email-service-secrets
+                  key: MAIL_HOST
+            - name: MAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: email-service-secrets
+                  key: MAIL_USER
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: email-service-secrets
+                  key: MAIL_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: email-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4004
+  selector:
+    app: email-service

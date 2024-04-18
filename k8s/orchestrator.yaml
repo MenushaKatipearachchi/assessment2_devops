@@ -1,0 +1,83 @@
+# Orchestrator Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orchestrator-service
+  template:
+    metadata:
+      labels:
+        app: orchestrator-service
+    spec:
+      containers:
+        - name: orchestrator-service
+          image: menushaeshan/orchestrator:tag
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 4007
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: PORT
+            - name: AUTH_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: AUTH_SERVICE_BASE_URL
+            - name: USER_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: USER_SERVICE_BASE_URL
+            - name: EMAIL_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: EMAIL_SERVICE_BASE_URL
+            - name: ORDER_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: ORDER_SERVICE_BASE_URL
+            - name: PAYMENT_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: PAYMENT_SERVICE_BASE_URL
+            - name: REVIEW_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: REVIEW_SERVICE_BASE_URL
+            - name: DELIVERY_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: DELIVERY_SERVICE_BASE_URL
+            - name: NOTIFICATION_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: NOTIFICATION_SERVICE_BASE_URL
+            - name: SELLER_SERVICE_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: orchestrator-service-secrets
+                  key: SELLER_SERVICE_BASE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orchestrator-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4007
+  selector:
+    app: orchestrator-service

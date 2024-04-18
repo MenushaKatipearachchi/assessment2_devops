@@ -1,0 +1,43 @@
+# Seller Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seller-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seller-service
+  template:
+    metadata:
+      labels:
+        app: seller-service
+    spec:
+      containers:
+        - name: seller-service
+          image: menushaeshan/seller:tag
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 4006
+          env:
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: seller-service-secrets
+                  key: DB_URL
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: seller-service-secrets
+                  key: PORT
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seller-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4006
+  selector:
+    app: seller-service

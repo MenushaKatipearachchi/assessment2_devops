@@ -1,0 +1,43 @@
+# User Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: menushaeshan/user:tag
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 4001
+          env:
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: user-service-secrets
+                  key: DB_URL
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: user-service-secrets
+                  key: PORT
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4001
+  selector:
+    app: user-service
