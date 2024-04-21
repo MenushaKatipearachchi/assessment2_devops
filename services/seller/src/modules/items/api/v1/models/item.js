@@ -49,3 +49,4 @@ const Item = mongoose.model("Item", ItemSchema);
 
 Item.syncIndexes();
 
+export { Item };
