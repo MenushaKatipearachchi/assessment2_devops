@@ -19,3 +19,7 @@ export function getAllItems({ filters = {}, sorts = {}, page, limit }) {
   }
   return Item.find(filters).sort(sorts).lean();
 }
+
+export function updateItemById(id, data) {
+  return Item.findByIdAndUpdate(id, data, { new: true }).lean();
+}
