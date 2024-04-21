@@ -9,6 +9,7 @@ import {
   serviceGetItems,
   serviceGetItemById,
   serviceUpdateItemById,
+  serviceDeleteItemById
 } from "./service";
 
 import { createItemSchema, updateItemSchema } from "./schema";
@@ -59,6 +60,14 @@ item.patch(
   })
 );
 
+item.delete(
+  "/:id",
+  celebrate({ [Segments.PARAMS]: objectIdSchema() }),
+  asyncHandler(async function controllerDeleteItemById(req, res) {
+    const data = await serviceDeleteItemById(req.params.id);
+    return toSuccess({ res, data, message: "Item deleted successfully!" });
+  })
+);
 
 
 export default item;
