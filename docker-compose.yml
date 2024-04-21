@@ -55,20 +55,6 @@ services:
     networks:
       - wellness-roots-network
 
-  notification-service:
-    container_name: notification-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - service=notification
-    ports:
-      - "4009:4009"
-    env_file:
-      - ./services/notification/.env
-    networks:
-      - wellness-roots-network
-
   order-service:
     container_name: order-service
     build:
