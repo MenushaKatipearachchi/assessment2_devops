@@ -23,3 +23,7 @@ export function getAllItems({ filters = {}, sorts = {}, page, limit }) {
 export function updateItemById(id, data) {
   return Item.findByIdAndUpdate(id, data, { new: true }).lean();
 }
+
+export function deleteItemById(id) {
+  return Item.findByIdAndDelete(id).lean();
+}
