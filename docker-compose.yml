@@ -27,20 +27,6 @@ services:
     networks:
       - wellness-roots-network
 
-  delivery-service:
-    container_name: delivery-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - service=delivery
-    ports:
-      - "4008:4008"
-    env_file:
-      - ./services/delivery/.env
-    networks:
-      - wellness-roots-network
-
   email-service:
     container_name: email-service
     build:
@@ -55,48 +41,6 @@ services:
     networks:
       - wellness-roots-network
 
-  notification-service:
-    container_name: notification-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - service=notification
-    ports:
-      - "4009:4009"
-    env_file:
-      - ./services/notification/.env
-    networks:
-      - wellness-roots-network
-
-  order-service:
-    container_name: order-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - service=order
-    ports:
-      - "4002:4002"
-    env_file:
-      - ./services/order/.env
-    networks:
-      - wellness-roots-network
-
-  payment-service:
-    container_name: payment-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - service=payment
-    ports:
-      - "4010:4010"
-    env_file:
-      - ./services/payment/.env
-    networks:
-      - wellness-roots-network
-
   review-service:
     container_name: review-service
     build:
@@ -108,20 +52,6 @@ services:
       - "4005:4005"
     env_file:
       - ./services/review/.env
-    networks:
-      - wellness-roots-network
-
-  seller-service:
-    container_name: seller-service
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - service=seller
-    ports:
-      - "4006:4006"
-    env_file:
-      - ./services/seller/.env
     networks:
       - wellness-roots-network
 
