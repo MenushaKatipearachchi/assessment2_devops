@@ -8,6 +8,7 @@ import {
   serviceCreateItem,
   serviceGetItems,
   serviceGetItemById,
+  serviceUpdateItemById,
 } from "./service";
 
 import { createItemSchema, updateItemSchema } from "./schema";
@@ -46,6 +47,17 @@ item.get(
   })
 );
 
+item.patch(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: objectIdSchema(),
+    [Segments.BODY]: updateItemSchema,
+  }),
+  asyncHandler(async function controllerUpdateItemById(req, res) {
+    const data = await serviceUpdateItemById(req.params.id, req.body);
+    return toSuccess({ res, data, message: "Item updated successfully!" });
+  })
+);
 
 
 
