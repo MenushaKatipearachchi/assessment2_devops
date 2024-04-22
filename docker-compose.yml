@@ -27,6 +27,20 @@ services:
     networks:
       - wellness-roots-network
 
+  delivery-service:
+    container_name: delivery-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - service=delivery
+    ports:
+      - "4008:4008"
+    env_file:
+      - ./services/delivery/.env
+    networks:
+      - wellness-roots-network
+
   email-service:
     container_name: email-service
     build:
