@@ -1,10 +1,10 @@
-# CTSE assessment -Y4S1
+# CTSE Assessment 2 -Y4S1
 
 #GROUP MEMBERS
 
 Group Leader - IT21113772 - M.E Katipearachchi
 Member 2 - IT21143236 - Sachethana B. L. O
-Member 3 - 
+Member 3 - IT21005862 - Ruwanara H.D.C
 
 ## WellnessRoots
 
