@@ -7,5 +7,7 @@ export const serviceHosts = {
   orders: config.ORDER_SERVICE_BASE_URL,
   payments: config.PAYMENT_SERVICE_BASE_URL,
   reviews: config.REVIEW_SERVICE_BASE_URL,
+  notification: config.NOTIFICATION_SERVICE_BASE_URL,
+  delivery: config.DELIVERY_SERVICE_BASE_URL,
   items: config.SELLER_SERVICE_BASE_URL,
 };

@@ -11,6 +11,7 @@ export const protectedRoutes = [
   "/v1/system/health",
   "/v1/items",
   "/v1/reviews",
+  "/v1/notification",
 ];
 
 export const roles = ["admin", "seller", "buyer"].reduce((acc, role) => {
