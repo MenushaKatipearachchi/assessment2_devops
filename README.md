@@ -2,8 +2,8 @@
 
 #GROUP MEMBERS
 
-Group Leader - IT21113772 - M.E Katipearachchi
-Member 2 - IT21143236 - Sachethana B. L. O
+Group Leader - IT21113772 - M.E Katipearachchi <br/>
+Member 2 - IT21143236 - Sachethana B. L. O <br/>
 Member 3 - IT21005862 - Ruwanara H.D.C
 
 ## WellnessRoots
