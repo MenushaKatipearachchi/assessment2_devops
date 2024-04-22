@@ -30,10 +30,10 @@ jobs:
     - name: Build
       run: pnpm run build
 
-    - name: Set up JDK 1.8
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '8'
+        java-version: '17'
         distribution: 'adopt'
     - name: Install SonarCloud Scanner
       run: |
