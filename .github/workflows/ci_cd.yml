@@ -44,8 +44,9 @@ jobs:
         echo "/opt/sonar-scanner/bin" >> $GITHUB_PATH
         echo "JAVA_HOME=${{ steps.setup-jdk.outputs.path }}" >> $GITHUB_ENV
 
-
     - name: Run SonarCloud Scanner
+      env:
+        JAVA_HOME: ${{ steps.setup-jdk.outputs.path }}
       run: sonar-scanner -Dsonar.projectKey=MenushaKatipearachchi_assessment2_devops -Dsonar.organization=menushakatipearachchi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
     - name: Build Docker image
