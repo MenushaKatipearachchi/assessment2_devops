@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
@@ -39,7 +39,7 @@ jobs:
         echo "/opt/sonar-scanner/bin" >> $GITHUB_PATH
 
     - name: Run SonarCloud Scanner
-      run: sonar-scanner -Dsonar.projectKey=MenushaKatipearachchi_assessment2_devops -Dsonar.organization=menushakatipearachchi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      run: sonar-scanner -Dsonar.java.binaries=/usr/lib/jvm/java-17-openjdk-amd64/bin -Dsonar.projectKey=MenushaKatipearachchi_assessment2_devops -Dsonar.organization=menushakatipearachchi -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
     - name: Build Docker image
       run: docker build --build-arg service=${{ matrix.service }} -t assessment2_devops-${{ matrix.service }}-service:latest .
